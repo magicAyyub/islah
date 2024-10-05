@@ -57,7 +57,7 @@ Cela démarrera les services définis dans `docker-compose.yml` :
 Après vous être connecté à pgAdmin, ajoutez un nouveau serveur PostgreSQL avec les paramètres suivants :
 
 - **Nom** : `Nom de votre choix`
-- **Hôte** : `postgres`
+- **Hôte** : `db`
 - **Port** : `5432`
 - **Nom d'utilisateur** : (valeur du fichier `.env`)
 - **Mot de passe** : (valeur du fichier `.env`)
@@ -86,42 +86,21 @@ sudo docker-compose up -d
 
 Cela démarre les services sans les reconstruire, ce qui est plus rapide.
 
-## Structure du projet
+### 8. Après un changement du schéma de la base de données
 
-```
-backend/
-│
-├── app/
-│   ├── __init__.py
-│   ├── api.py
-│
-│── models/
-│   ├── __init__.py
-│   ├── item.py
-│   ├── user.py
-│
-│── utils/
-│   ├── __init__.py
-│   ├── database.py
-│   ├── schemas.py
-│   ├── crud.py
-│   ├── auth.py 
-│
-├── Dockerfile
-├── docker-compose.yml
-├── main.py
-├── requirements.txt
-└── .env
+Faire une migration de la base de données
+
+```bash
+alembic revision --autogenerate -m "message de migration"
+alembic upgrade head
 ```
 
-- `app/` : Contient les fichiers de l'application FastAPI.
-- `models/` : Contient les fichiers de modèles Pydantic et de modèles de base de données.
-- `utils/` : Contient les fichiers utilitaires pour la base de données, les schémas, les opérations CRUD et l'authentification.
-- `Dockerfile` : Fichier Docker pour construire l'image de l'application.
-- `docker-compose.yml` : Fichier Docker Compose pour définir les services.
-- `main.py` : Point d'entrée de l'application FastAPI.
-- `requirements.txt` : Fichier de dépendances Python.
-- `.env` : Fichier de variables d'environnement.
+### 9. Voir les logs
+
+```bash
+sudo docker-compose logs web 
+```
+
 
 ## Contributions
 
