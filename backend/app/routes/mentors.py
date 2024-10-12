@@ -5,7 +5,6 @@ from utils.models import Mentor
 from pydantic import BaseModel
 
 class MentorModel(BaseModel):
-    id: int
     first_name: str
     last_name: str
     email: str

@@ -1,5 +1,5 @@
 # Utilise l'image Python 3.9 comme base
-FROM python:3.9
+FROM python:3.12
 
 # Crée un répertoire de travail dans le conteneur
 WORKDIR /backend

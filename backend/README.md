@@ -100,6 +100,13 @@ alembic upgrade head
 ```bash
 sudo docker-compose logs web 
 ```
+# 10. Réinitialiser la base de données
+
+```bash
+sudo docker-compose down
+sudo docker volume rm islah_backend_postgres-data
+sudo docker-compose up -d
+``` 
 
 
 ## Contributions

@@ -5,7 +5,6 @@ from utils.models import Attendance
 from pydantic import BaseModel
 from datetime import date
 class AttendanceModel(BaseModel):
-    id: int
     student_id: int
     course_id: int
     date: date

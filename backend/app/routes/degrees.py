@@ -5,7 +5,6 @@ from utils.models import Degree
 from pydantic import BaseModel
 
 class DegreeModel(BaseModel):
-    id: int
     name: str
     level: str
 

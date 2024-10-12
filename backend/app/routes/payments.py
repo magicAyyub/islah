@@ -3,18 +3,17 @@ from sqlalchemy.orm import Session
 from utils.database import get_db
 from utils.models import Payment
 from pydantic import BaseModel
-from datetime import date
+from datetime import datetime
 
 class PaymentModel(BaseModel):
-    id: int
     amount: float
-    date: date
+    date: datetime = datetime.now()
     mentor_id: int  
 
 class PaymentResponse(BaseModel):
     id: int
     amount: float
-    date: date
+    date: datetime 
     mentor_id: int
 
 router = APIRouter(

@@ -6,7 +6,7 @@ from .database import Base
 class Mentor(Base):
     __tablename__ = "mentors"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     first_name = Column(String, index=True)
     last_name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
@@ -22,7 +22,7 @@ class Mentor(Base):
 class Student(Base):
     __tablename__ = "students"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     first_name = Column(String, index=True)
     last_name = Column(String, index=True)
     birth_date = Column(DateTime)
@@ -40,7 +40,7 @@ class Student(Base):
 class Degree(Base):
     __tablename__ = "degrees"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, index=True)
     level = Column(String)
 
@@ -52,7 +52,7 @@ class Degree(Base):
 class Classroom(Base):
     __tablename__ = "classrooms"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, index=True)
     degree_id = Column(Integer, ForeignKey("degrees.id"))
     capacity = Column(Integer)
@@ -77,7 +77,7 @@ class Course(Base):
 class Attendance(Base):
     __tablename__ = "attendances"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     date = Column(DateTime)
     student_id = Column(Integer, ForeignKey("students.id"))
     course_id = Column(Integer, ForeignKey("courses.id"))
@@ -88,7 +88,7 @@ class Attendance(Base):
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
@@ -105,7 +105,7 @@ class User(Base):
 class Payment(Base):
     __tablename__ = "payments"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     amount = Column(Integer)
     date = Column(DateTime)
     method = Column(String)
