@@ -29,7 +29,7 @@ db_dependency = Depends(get_db)
 async def get_classrooms(db: Session = db_dependency) -> list[ClassroomResponse]:
     """Get all classrooms."""
     classrooms = db.query(Classroom).all()
-    if classrooms is None:
+    if not classrooms:
         raise HTTPException(status_code=404, detail="No classrooms found")
     return classrooms
 
@@ -37,7 +37,7 @@ async def get_classrooms(db: Session = db_dependency) -> list[ClassroomResponse]
 async def get_classroom(classroom_id: int, db: Session = db_dependency) -> ClassroomResponse:
     """Get a classroom by ID."""
     classroom = db.query(Classroom).filter(Classroom.id == classroom_id).first()
-    if classroom is None:
+    if not classroom:
         raise HTTPException(status_code=404, detail="Classroom not found")
     return classroom
 
@@ -60,7 +60,7 @@ async def create_classroom(classroom: ClassroomModel, db: Session = db_dependenc
 async def update_classroom(classroom_id: int, classroom: ClassroomModel, db: Session = db_dependency) -> ClassroomResponse:
     """Update a classroom by ID."""
     db_classroom = db.query(Classroom).filter(Classroom.id == classroom_id).first()
-    if db_classroom is None:
+    if not db_classroom:
         raise HTTPException(status_code=404, detail="Classroom not found")
     db_classroom.name = classroom.name
     db_classroom.degree_id = classroom.degree_id
@@ -75,7 +75,7 @@ async def update_classroom(classroom_id: int, classroom: ClassroomModel, db: Ses
 async def delete_classroom(classroom_id: int, db: Session = db_dependency) -> ClassroomResponse:
     """Delete a classroom by ID."""
     db_classroom = db.query(Classroom).filter(Classroom.id == classroom_id).first()
-    if db_classroom is None:
+    if not db_classroom:
         raise HTTPException(status_code=404, detail="Classroom not found")
     db.delete(db_classroom)
     db.commit()
@@ -85,9 +85,9 @@ async def delete_classroom(classroom_id: int, db: Session = db_dependency) -> Cl
 async def get_places_available_in_classroom(classroom_id: int, db: Session = db_dependency) -> int:
     """Get the number of places available in a classroom."""
     classroom = db.query(Classroom).filter(Classroom.id == classroom_id).first()
-    if classroom is None:
+    if not classroom:
         raise HTTPException(status_code=404, detail="Classroom not found")
     students = db.query(Student).filter(Student.classroom_id== classroom_id).all()
-    if students is None:
+    if not students:
         raise HTTPException(status_code=404, detail="No students found for this classroom")
     return classroom.capacity - len(students)

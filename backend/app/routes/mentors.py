@@ -27,7 +27,7 @@ db_dependency = Depends(get_db)
 async def get_mentors(db: Session = db_dependency) -> list[MentorResponse]:
     """Get all mentors."""
     mentors = db.query(Mentor).all()
-    if mentors is None:
+    if not mentors:
         raise HTTPException(status_code=404, detail="No mentors found")
     return mentors
 
@@ -35,7 +35,7 @@ async def get_mentors(db: Session = db_dependency) -> list[MentorResponse]:
 async def get_mentor(mentor_id: int, db: Session = db_dependency) -> MentorResponse:
     """Get a mentor by ID."""
     mentor = db.query(Mentor).filter(Mentor.id == mentor_id).first()
-    if mentor is None:
+    if not mentor:
         raise HTTPException(status_code=404, detail="Mentor not found")
     return mentor
 
@@ -57,7 +57,7 @@ async def create_mentor(mentor: MentorModel, db: Session = db_dependency) -> Men
 async def update_mentor(mentor_id: int, mentor: MentorModel, db: Session = db_dependency) -> MentorResponse:
     """Update a mentor by ID."""
     db_mentor = db.query(Mentor).filter(Mentor.id == mentor_id).first()
-    if db_mentor is None:
+    if not db_mentor:
         raise HTTPException(status_code=404, detail="Mentor not found")
     db_mentor.first_name = mentor.first_name
     db_mentor.last_name = mentor.last_name
@@ -71,7 +71,7 @@ async def update_mentor(mentor_id: int, mentor: MentorModel, db: Session = db_de
 async def delete_mentor(mentor_id: int, db: Session = db_dependency) -> MentorResponse:
     """Delete a mentor by ID."""
     db_mentor = db.query(Mentor).filter(Mentor.id == mentor_id).first()
-    if db_mentor is None:
+    if not db_mentor:
         raise HTTPException(status_code=404, detail="Mentor not found")
     db.delete(db_mentor)
     db.commit()

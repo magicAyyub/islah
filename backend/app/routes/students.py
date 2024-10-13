@@ -34,7 +34,7 @@ db_dependency = Depends(get_db)
 async def get_students(db: Session = db_dependency) -> list[StudentResponse]:
     """Get all students."""
     students = db.query(Student).all()
-    if students is None:
+    if not students:
         raise HTTPException(status_code=404, detail="No students found")
     return students
 
@@ -42,7 +42,7 @@ async def get_students(db: Session = db_dependency) -> list[StudentResponse]:
 async def get_student(student_id: int, db: Session = db_dependency) -> StudentResponse:
     """Get a student by ID."""
     student = db.query(Student).filter(Student.id == student_id).first()
-    if student is None:
+    if not student:
         raise HTTPException(status_code=404, detail="Student not found")
     return student
 
@@ -67,7 +67,7 @@ async def create_student(student: StudentModel, db: Session = db_dependency) -> 
 async def update_student(student_id: int, student: StudentModel, db: Session = db_dependency) -> StudentResponse:
     """Update a student by ID."""
     db_student = db.query(Student).filter(Student.id == student_id).first()
-    if db_student is None:
+    if not db_student:
         raise HTTPException(status_code=404, detail="Student not found")
     db_student.first_name = student.first_name
     db_student.last_name = student.last_name
@@ -84,7 +84,7 @@ async def update_student(student_id: int, student: StudentModel, db: Session = d
 async def delete_student(student_id: int, db: Session = db_dependency) -> StudentResponse:
     """Delete a student by ID."""
     db_student = db.query(Student).filter(Student.id == student_id).first()
-    if db_student is None:
+    if not db_student:
         raise HTTPException(status_code=404, detail="Student not found")
     db.delete(db_student)
     db.commit()
@@ -94,7 +94,7 @@ async def delete_student(student_id: int, db: Session = db_dependency) -> Studen
 async def get_students_by_degree(degree_id: int, db: Session = db_dependency) -> list[StudentResponse]:
     """Get all students by degree."""
     students = db.query(Student).filter(Student.degree_id == degree_id).all()
-    if students is None:
+    if not students:
         raise HTTPException(status_code=404, detail="No students found for this degree")
     return students
 
@@ -102,7 +102,7 @@ async def get_students_by_degree(degree_id: int, db: Session = db_dependency) ->
 async def get_students_by_classroom(classroom_id: int, db: Session = db_dependency) -> list[StudentResponse]:
     """Get all students by classroom."""
     students = db.query(Student).filter(Student.classroom_id == classroom_id).all()
-    if students is None:
+    if not students:
         raise HTTPException(status_code=404, detail="No students found for this classroom")
     return students
 
@@ -110,7 +110,7 @@ async def get_students_by_classroom(classroom_id: int, db: Session = db_dependen
 async def get_students_by_mentor(mentor_id: int, db: Session = db_dependency) -> list[StudentResponse]:
     """Get all students by mentor."""
     students = db.query(Student).filter(Student.mentor_id == mentor_id).all()
-    if students is None:
+    if not students:
         raise HTTPException(status_code=404, detail="No students found for this mentor")
     return students
 
@@ -118,7 +118,7 @@ async def get_students_by_mentor(mentor_id: int, db: Session = db_dependency) ->
 async def get_students_by_state(state: str, db: Session = db_dependency) -> list[StudentResponse]:
     """Get all students by state."""
     students = db.query(Student).filter(Student.state == state).all()
-    if students is None:
+    if not students:
         raise HTTPException(status_code=404, detail="No students found for this state")
     return students
 
@@ -135,6 +135,14 @@ async def filter_students_by_criteria(degree_id: int = None, classroom_id: int =
     if state is not None:
         students = students.filter(Student.state == state)
     students = students.all()
-    if students is None:
+    if not students:
         raise HTTPException(status_code=404, detail="No students found for these criteria")
     return students
+
+@router.get("/students/search")
+async def search_students(query: str, db: Session = db_dependency) -> list[StudentResponse]:
+    """Search students by query."""
+    students = db.query(Student).filter(Student.first_name.ilike(f"%{query}%") | Student.last_name.ilike(f"%{query}%")).all()
+    if not students:
+        raise HTTPException(status_code=404, detail="No students found for this query")
+    return students 

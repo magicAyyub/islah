@@ -5,7 +5,7 @@ This module contains the FastAPI application and its configuration.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 # from utils.database import engine
-import utils.models as models
+# import utils.models as models
 from app.routes import students, mentors, degrees, classrooms, courses, attendances, payments
 from utils.settings import ORIGINS
 

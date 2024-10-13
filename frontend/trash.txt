@@ -1,0 +1,56 @@
+I built the backend of a school management system. I want you to build the frontend. I have created a Next.js application, installed shadcn, and also installed at the same level acernity UI. I want something clean, modern, and intuitive. The backend is made with FastAPI, offering endpoints in JSON format.
+
+Here are the endpoints of the backend:
+
+/students : Get Students
+/students/{student_id} : Get Student by ID
+/students : Create Student
+/students/{student_id} : Update Student
+/students/{student_id} : Delete Student
+/students/degree/{degree_id} : Get Students by Degree ID
+/students/classroom/{classroom_id} : Get Students by Classroom ID
+/students/mentor/{mentor_id} : Get Students by Mentor ID
+/students/state/{state} : Get Students by State
+/students/filter : Get Students by filters
+/students/search : Get Students by search
+
+/mentors : Get Mentors
+/mentors/{mentor_id} : Get Mentor by ID
+/mentors : Create Mentor
+/mentors/{mentor_id} : Update Mentor
+/mentors/{mentor_id} : Delete Mentor
+
+/degrees : Get Degrees
+/degrees/{degree_id} : Get Degree by ID
+/degrees : Create Degree
+/degrees/{degree_id} : Update Degree
+/degrees/{degree_id} : Delete Degree
+
+/classrooms : Get Classrooms
+/classrooms/{classroom_id} : Get Classroom by ID
+/classrooms : Create Classroom
+/classrooms/{classroom_id} : Update Classroom
+/classrooms/{classroom_id} : Delete Classroom
+
+/courses : Get Courses
+/courses/{course_id} : Get Course by ID
+/courses : Create Course
+/courses/{course_id} : Update Course
+/courses/{course_id} : Delete Course
+
+/attendances : Get Attendances
+/attendances/{attendance_id} : Get Attendance by ID
+/attendances : Create Attendance
+/attendances/{attendance_id} : Update Attendance
+/attendances/{attendance_id} : Delete Attendance
+
+/payments : Get Payments
+/payments/{payment_id} : Get Payment by ID
+/payments : Create Payment
+/payments/{payment_id} : Update Payment
+/payments/{payment_id} : Delete Payment
+/payments/student/{student_id} : Get Payments by Student ID
+/payments/course/{course_id} : Get Payments by Course ID
+
+I need a clean and modern user interface that allows me to manage the school system. I need a dashboard that allows me to manage the students, the mentors, the degrees, the classrooms, the courses, the attendances, and the payments.
+The navigation should be intuitive and the UI should be clean and modern.

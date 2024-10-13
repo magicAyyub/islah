@@ -25,7 +25,7 @@ db_dependency = Depends(get_db)
 async def get_attendances(db: Session = db_dependency) -> list[AttendanceResponse]:
     """Get all attendances."""
     attendances = db.query(Attendance).all()
-    if attendances is None:
+    if not attendances:
         raise HTTPException(status_code=404, detail="No attendances found")
     return attendances
 
@@ -33,7 +33,7 @@ async def get_attendances(db: Session = db_dependency) -> list[AttendanceRespons
 async def get_attendance(attendance_id: int, db: Session = db_dependency) -> AttendanceResponse:
     """Get an attendance by ID."""
     attendance = db.query(Attendance).filter(Attendance.id == attendance_id).first()
-    if attendance is None:
+    if not attendance:
         raise HTTPException(status_code=404, detail="Attendance not found")
     return attendance
 
@@ -54,7 +54,7 @@ async def create_attendance(attendance: AttendanceModel, db: Session = db_depend
 async def update_attendance(attendance_id: int, attendance: AttendanceModel, db: Session = db_dependency) -> AttendanceResponse:
     """Update an attendance by ID."""
     db_attendance = db.query(Attendance).filter(Attendance.id == attendance_id).first()
-    if db_attendance is None:
+    if not db_attendance:
         raise HTTPException(status_code=404, detail="Attendance not found")
     db_attendance.student_id = attendance.student_id
     db_attendance.course_id = attendance.course_id
@@ -67,7 +67,7 @@ async def update_attendance(attendance_id: int, attendance: AttendanceModel, db:
 async def delete_attendance(attendance_id: int, db: Session = db_dependency) -> AttendanceResponse:
     """Delete an attendance by ID."""
     db_attendance = db.query(Attendance).filter(Attendance.id == attendance_id).first()
-    if db_attendance is None:
+    if not db_attendance:
         raise HTTPException(status_code=404, detail="Attendance not found")
     db.delete(db_attendance)
     db.commit()

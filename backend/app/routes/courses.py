@@ -27,7 +27,7 @@ db_dependency = Depends(get_db)
 async def get_courses(db: Session = db_dependency) -> list[CourseResponse]:
     """Get all courses."""
     courses = db.query(Course).all()
-    if courses is None:
+    if not courses:
         raise HTTPException(status_code=404, detail="No courses found")
     return courses
 
@@ -35,7 +35,7 @@ async def get_courses(db: Session = db_dependency) -> list[CourseResponse]:
 async def get_course(course_id: int, db: Session = db_dependency) -> CourseResponse:
     """Get a course by ID."""
     course = db.query(Course).filter(Course.id == course_id).first()
-    if course is None:
+    if not course:
         raise HTTPException(status_code=404, detail="Course not found")
     return course
 
@@ -57,7 +57,7 @@ async def create_course(course: CourseModel, db: Session = db_dependency) -> Cou
 async def update_course(course_id: int, course: CourseModel, db: Session = db_dependency) -> CourseResponse:
     """Update a course by ID."""
     db_course = db.query(Course).filter(Course.id == course_id).first()
-    if db_course is None:
+    if not db_course:
         raise HTTPException(status_code=404, detail="Course not found")
     db_course.name = course.name
     db_course.description = course.description
@@ -71,7 +71,7 @@ async def update_course(course_id: int, course: CourseModel, db: Session = db_de
 async def delete_course(course_id: int, db: Session = db_dependency) -> CourseResponse:
     """Delete a course by ID."""
     db_course = db.query(Course).filter(Course.id == course_id).first()
-    if db_course is None:
+    if not db_course:
         raise HTTPException(status_code=404, detail="Course not found")
     db.delete(db_course)
     db.commit()
