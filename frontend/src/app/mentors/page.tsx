@@ -1,70 +1,142 @@
 'use client'
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { BaseUrl } from '../base';
 
-interface Mentor {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-}
+import { useState, useEffect } from 'react'
+import DataTable from '@/components/DataTable'
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { BaseUrl, Mentor } from '../base'
+import { useRouter } from 'next/navigation'
 
-const MentorsList = () => {
-  const [mentors, setMentors] = useState<Mentor[]>([]);
+export default function MentorsPage() {
+  const [mentors, setMentors] = useState<Mentor[]>([])
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [currentMentor, setCurrentMentor] = useState<Mentor | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
-    axios.get(`${BaseUrl}/mentors`)
-      .then(response => setMentors(response.data))
-      .catch(error => console.error('Error fetching mentors:', error));
-  }, []);
+    const fetchData = async () => {
+        const response = await fetch(`${BaseUrl}/mentors`)
+        const data = await response.json()
+        setMentors(data as Mentor[])
+    }
+    fetchData()
+  }, [])
+
+  const columns = [
+    { key: 'id', label: 'ID' },
+    { key: 'first_name', label: 'First Name' },
+    { key: 'last_name', label: 'Last Name' },
+    { key: 'email', label: 'Email' },
+    { key: 'phone', label: 'Phone' },
+  ] 
+
+  const handleEdit = (mentor: Mentor) => {
+    setCurrentMentor(mentor)
+    setIsDialogOpen(true)
+  }
+
+  const handleDelete = async (mentor: Mentor) => {
+    await fetch(`${BaseUrl}/mentors/${mentor.id}`, { method: 'DELETE' })
+    setMentors(mentors.filter((m) => m.id !== mentor.id))
+  }
+
+  const handleAdd = () => {
+    setCurrentMentor(null)
+    setIsDialogOpen(true)
+  } 
+
+  const handleAddStudent = async (mentor: Mentor) => {
+    // redirect to the students page
+    router.push(`/students/add?mentor_id=${mentor.id}`)
+  } 
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (currentMentor?.id) {
+      // Edit mentor
+      await fetch(`${BaseUrl}/mentors/${currentMentor.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(currentMentor),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    } 
+    else {
+      // Add mentor
+      await fetch(`${BaseUrl}/mentors`, {
+        method: 'POST',
+        body: JSON.stringify(currentMentor),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    }
+
+    // Refetch the updated list of students after the operation
+    const response = await fetch(`${BaseUrl}/mentors`)
+    const data = await response.json()
+    setMentors(data)
+
+    setIsDialogOpen(false)
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Mentors List</h1>
-      <Button asChild variant="default">
-        <Link href="/mentors/create">Add Mentor</Link>
-      </Button>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>First Name</TableHead>
-            <TableHead>Last Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {mentors.length > 0 ? (
-            mentors.map(mentor => (
-              <TableRow key={mentor.id}>
-                <TableCell>{mentor.id}</TableCell>
-                <TableCell>{mentor.first_name}</TableCell>
-                <TableCell>{mentor.last_name}</TableCell>
-                <TableCell>{mentor.email}</TableCell>
-                <TableCell>{mentor.phone}</TableCell>
-                <TableCell>
-                  <Button asChild variant="outline">
-                    <Link href={`/mentors/${mentor.id}`}>View</Link> 
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={6}>No mentors available</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+    <div>
+      <h1 className="text-3xl font-bold mb-6">Mentors</h1>
+      <DataTable
+        columns={columns}
+        data={mentors}
+        onAdd={handleAdd}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onAddStudent={handleAddStudent}
+      />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Mentor</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="first_name">First Name</Label>
+              <Input
+                id="first_name"
+                value={currentMentor?.first_name || ''}
+                onChange={(e) => setCurrentMentor({ ...currentMentor, first_name: e.target.value } as Mentor)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="last_name">Last Name</Label>
+              <Input
+                id="last_name"
+                value={currentMentor?.last_name || ''}
+                onChange={(e) => setCurrentMentor({ ...currentMentor, last_name: e.target.value } as Mentor)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                value={currentMentor?.email || ''}
+                onChange={(e) => setCurrentMentor({ ...currentMentor, email: e.target.value } as Mentor)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone</Label>
+              <Input
+                id="phone"
+                value={currentMentor?.phone || ''}
+                onChange={(e) => setCurrentMentor({ ...currentMentor, phone: e.target.value } as Mentor)}
+              />
+            </div>  
+            <Button type="submit">Save</Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
-  );
-};
-
-export default MentorsList;
+  )
+}

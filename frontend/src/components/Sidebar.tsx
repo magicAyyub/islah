@@ -1,28 +1,35 @@
-import { FaUsers, FaChalkboardTeacher, FaUniversity, FaBook, FaMoneyBill } from 'react-icons/fa';
+import Link from 'next/link'
+import { Home, Users, GraduationCap, School, BookOpen, Calendar, CreditCard } from 'lucide-react'
 
-export const Sidebar = () => {
+const Sidebar = () => {
+  const menuItems = [
+    { name: 'Dashboard', icon: Home, href: '/' },
+    { name: 'Students', icon: Users, href: '/students' },
+    { name: 'Mentors', icon: Users, href: '/mentors' },
+    { name: 'Degrees', icon: GraduationCap, href: '/degrees' },
+    { name: 'Classrooms', icon: School, href: '/classrooms' },
+    { name: 'Courses', icon: BookOpen, href: '/courses' },
+    { name: 'Attendances', icon: Calendar, href: '/attendances' },
+    { name: 'Payments', icon: CreditCard, href: '/payments' },
+  ]
+
   return (
-    <div className="w-64 bg-white shadow-md">
-      <div className="p-4 font-bold text-xl text-center">School Dashboard</div>
-      <nav className="mt-10">
-        <a href="/students" className="block py-2.5 px-4 text-gray-700 hover:bg-gray-200">
-          <FaUsers className="inline mr-2"/> Students
-        </a>
-        <a href="/mentors" className="block py-2.5 px-4 text-gray-700 hover:bg-gray-200">
-          <FaChalkboardTeacher className="inline mr-2"/> Mentors
-        </a>
-        <a href="/degrees" className="block py-2.5 px-4 text-gray-700 hover:bg-gray-200">
-          <FaUniversity className="inline mr-2"/> Degrees
-        </a>
-        <a href="/classrooms" className="block py-2.5 px-4 text-gray-700 hover:bg-gray-200">
-          <FaBook className="inline mr-2"/> Classrooms
-        </a>
-        <a href="/payments" className="block py-2.5 px-4 text-gray-700 hover:bg-gray-200">
-          <FaMoneyBill className="inline mr-2"/> Payments
-        </a>
-      </nav>
+    <div className="flex flex-col w-64 bg-white shadow-lg">
+      <div className="flex items-center justify-center h-20 shadow-md">
+        <h1 className="text-3xl font-bold text-blue-600">SMS</h1>
+      </div>
+      <ul className="flex flex-col py-4">
+        {menuItems.map((item) => (
+          <li key={item.name}>
+            <Link href={item.href} className="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100">
+              <item.icon className="w-5 h-5 mr-3" />
+              {item.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
-  );
-};
+  )
+}
 
-
+export default Sidebar
