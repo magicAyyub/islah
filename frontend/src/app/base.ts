@@ -55,8 +55,3 @@ export type Payment = {
     date: string
     mentor_id: number
 }
-
-
-
-
-

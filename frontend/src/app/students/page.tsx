@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { toast } from 'react-toastify'
 import {
   Select,
   SelectContent,
@@ -15,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import toast from 'react-hot-toast';
 import { Student, Classroom, Degree, BaseUrl } from '../base'
 
 
@@ -67,6 +67,7 @@ export default function StudentsPage() {
   const handleDelete = async (student: Student) => {
     await fetch(`${BaseUrl}/students/${student.id}`, { method: 'DELETE' })
     setStudents(students.filter((s) => s.id !== student.id))
+    toast.success('Student deleted successfully!')
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,7 +90,7 @@ export default function StudentsPage() {
     setStudents(data)
 
     setIsDialogOpen(false)
-    toast.success('You have successfully saved the student')
+    toast.success('Student saved successfully!')
   }
 
   return (
