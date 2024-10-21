@@ -1,35 +1,77 @@
-import Link from 'next/link'
-import { Home, Users, GraduationCap, School, BookOpen, Calendar, CreditCard } from 'lucide-react'
+'use client'
 
-const Sidebar = () => {
-  const menuItems = [
-    { name: 'Dashboard', icon: Home, href: '/' },
-    { name: 'Students', icon: Users, href: '/students' },
-    { name: 'Mentors', icon: Users, href: '/mentors' },
-    { name: 'Degrees', icon: GraduationCap, href: '/degrees' },
-    { name: 'Classrooms', icon: School, href: '/classrooms' },
-    { name: 'Courses', icon: BookOpen, href: '/courses' },
-    { name: 'Attendances', icon: Calendar, href: '/attendances' },
-    { name: 'Payments', icon: CreditCard, href: '/payments' },
-  ]
+import Link from 'next/link'
+import { Settings } from 'lucide-react'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { useState } from 'react'
+import { menuItems } from '@/app/base'
+
+interface SidebarProps {
+  activeTab?: string
+}
+
+const Sidebar = (props: SidebarProps) => {
+  const [currentTab, setCurrentTab] = useState(props.activeTab)
+
+
+
 
   return (
-    <div className="flex flex-col w-64 bg-white shadow-lg">
-      <div className="flex items-center justify-center h-20 shadow-md">
-        <h1 className="text-3xl font-bold text-blue-600">SMS</h1>
-      </div>
-      <ul className="flex flex-col py-4">
-        {menuItems.map((item) => (
-          <li key={item.name}>
-            <Link href={item.href} className="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100">
-              <item.icon className="w-5 h-5 mr-3" />
-              {item.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+    <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+      {menuItems.map((item) => (
+        <Tooltip key={item.name}>
+          <TooltipTrigger asChild>
+            {
+              currentTab === item.name ? (
+                <Link
+                  href={item.href}
+                  className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+                  onClick={() => setCurrentTab(item.name)}
+                >
+                  <item.icon className="h-4 w-4 transition-all group-hover:scale-110" />
+                  <span className="sr-only">{item.name}</span>
+                </Link>
+              ) : 
+                
+              (
+                <Link
+                  href={item.href}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                  onClick={() => setCurrentTab(item.name)}
+                >
+                  <item.icon className="h-5 w-5" />
+                  <span className="sr-only">{item.name}</span>
+                </Link>
+              )
+            }
+          </TooltipTrigger>
+          <TooltipContent side="right">{item.name}</TooltipContent>
+        </Tooltip>
+      ))
+    }
+    </nav>
+    <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Link
+            href="#"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+          >
+            <Settings className="h-5 w-5" />
+            <span className="sr-only">Settings</span>
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent side="right">Settings</TooltipContent>
+      </Tooltip>
+    </nav>
+  </aside>
   )
 }
 
 export default Sidebar
+

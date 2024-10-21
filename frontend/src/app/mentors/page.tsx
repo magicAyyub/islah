@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { BaseUrl, Mentor } from '../base'
 import { useRouter } from 'next/navigation'
+import Sidebar from '@/components/Sidebar'
+import Header from '@/components/Header'
 
 export default function MentorsPage() {
   const [mentors, setMentors] = useState<Mentor[]>([])
@@ -85,8 +87,12 @@ export default function MentorsPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Mentors</h1>
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+    <Sidebar
+      activeTab="Mentors"
+    />
+    <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+     <Header />
       <DataTable
         columns={columns}
         data={mentors}
@@ -138,5 +144,6 @@ export default function MentorsPage() {
         </DialogContent>
       </Dialog>
     </div>
+  </div>
   )
 }

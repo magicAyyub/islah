@@ -25,7 +25,7 @@ export default function DataTable<T>({ columns, data, onAdd, onEdit, onDelete, o
   )
 
   return (
-    <div>
+    <div className='sm:px-6 px-4'>
       <div className="flex justify-between mb-4">
         <div className="flex items-center">
           <Input

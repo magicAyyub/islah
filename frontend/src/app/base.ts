@@ -1,3 +1,4 @@
+import { Home, Users, GraduationCap, School, BookOpen, Calendar, CreditCard } from 'lucide-react';
 export const BaseUrl = 'http://localhost:8000';
 
 export type Student = {
@@ -55,3 +56,14 @@ export type Payment = {
     date: string
     mentor_id: number
 }
+
+export const menuItems = [
+    { name: 'Dashboard', icon: Home, href: '/'},
+    { name: 'Students', icon: Users, href: '/students' },
+    { name: 'Mentors', icon: Users, href: '/mentors' },
+    { name: 'Degrees', icon: GraduationCap, href: '/degrees' },
+    { name: 'Classrooms', icon: School, href: '/classrooms' },
+    { name: 'Courses', icon: BookOpen, href: '/courses' },
+    { name: 'Attendances', icon: Calendar, href: '/attendances' },
+    { name: 'Payments', icon: CreditCard, href: '/payments' },
+  ]

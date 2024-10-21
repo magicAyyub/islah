@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Sidebar from '@/components/Sidebar'
 import { Toaster } from 'react-hot-toast'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,9 +18,11 @@ interface Props {
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
+      <head>
+        <link rel="shortcut icon" href="/static/ii.jpeg" />
+      </head>
       <body className={inter.className}>
         <div className="flex h-screen bg-gray-100">
-          <Sidebar />
           <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
           <Toaster position="top-right" toastOptions={{
             className: 'bg-background text-foreground',
@@ -30,9 +32,9 @@ export default function RootLayout({ children }: Props) {
               color: 'var(--foreground)',
             },
           }} />
-            <div className="container mx-auto px-6 py-8">
-              {children}
-            </div>
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
           </main>
         </div>
       </body>

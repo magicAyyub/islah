@@ -15,7 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import toast from 'react-hot-toast';
+import Sidebar from '@/components/Sidebar'
 import { Student, Classroom, Degree, BaseUrl } from '../base'
+import Header from '@/components/Header'
 
 
 /*
@@ -94,85 +96,90 @@ export default function StudentsPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-6">Students</h1>
-      <DataTable
-        columns={columns}
-        data={students}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <Sidebar
+        activeTab="Students"
       />
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add New Student</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="first_name">First Name</Label>
-              <Input
-                id="first_name"
-                value={currentStudent?.first_name || ''}
-                onChange={(e) => setCurrentStudent({ ...currentStudent, first_name: e.target.value } as Student)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="last_name">Last Name</Label>
-              <Input
-                id="last_name"
-                value={currentStudent?.last_name || ''}
-                onChange={(e) => setCurrentStudent({ ...currentStudent, last_name: e.target.value } as Student)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="birth_date">Birth Date</Label>
-              <Input
-                id="birth_date"
-                type="date"
-                value={currentStudent?.birth_date || ''}
-                onChange={(e) => setCurrentStudent({ ...currentStudent, birth_date: e.target.value } as Student)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="degree_id">Degree</Label>
-              <Select
-                value={currentStudent?.degree_id?.toString() || ''}
-                onValueChange={(value) => setCurrentStudent({ ...currentStudent, degree_id: parseInt(value) } as Student)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a new Degree" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {degrees.map((degree) => (
-                      <SelectItem key={degree.id} value={degree.id.toString()}>{degree.name}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="classroom_id">Classroom</Label>
-              <Select
-                value={currentStudent?.classroom_id?.toString() || ''}
-                onValueChange={(value) => setCurrentStudent({ ...currentStudent, classroom_id: parseInt(value) } as Student)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a new Classroom" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {classrooms.map((classroom) => (
-                      <SelectItem key={classroom.id} value={classroom.id.toString()}>{classroom.name}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <Button type="submit">Save</Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+            <Header />
+            <DataTable
+              columns={columns}
+              data={students}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add New Student</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Label htmlFor="first_name">First Name</Label>
+                    <Input
+                      id="first_name"
+                      value={currentStudent?.first_name || ''}
+                      onChange={(e) => setCurrentStudent({ ...currentStudent, first_name: e.target.value } as Student)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="last_name">Last Name</Label>
+                    <Input
+                      id="last_name"
+                      value={currentStudent?.last_name || ''}
+                      onChange={(e) => setCurrentStudent({ ...currentStudent, last_name: e.target.value } as Student)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="birth_date">Birth Date</Label>
+                    <Input
+                      id="birth_date"
+                      type="date"
+                      value={currentStudent?.birth_date || ''}
+                      onChange={(e) => setCurrentStudent({ ...currentStudent, birth_date: e.target.value } as Student)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="degree_id">Degree</Label>
+                    <Select
+                      value={currentStudent?.degree_id?.toString() || ''}
+                      onValueChange={(value) => setCurrentStudent({ ...currentStudent, degree_id: parseInt(value) } as Student)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a new Degree" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {degrees.map((degree) => (
+                            <SelectItem key={degree.id} value={degree.id.toString()}>{degree.name}</SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="classroom_id">Classroom</Label>
+                    <Select
+                      value={currentStudent?.classroom_id?.toString() || ''}
+                      onValueChange={(value) => setCurrentStudent({ ...currentStudent, classroom_id: parseInt(value) } as Student)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a new Classroom" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {classrooms.map((classroom) => (
+                            <SelectItem key={classroom.id} value={classroom.id.toString()}>{classroom.name}</SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button type="submit">Save</Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+    </div>
     </div>
   )
 }
